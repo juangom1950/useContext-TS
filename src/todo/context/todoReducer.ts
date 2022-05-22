@@ -1,33 +1,35 @@
-import { TodoState, Todo } from '../interfaces/interfaces';
+import { TodoState, Todo } from "../interfaces/interfaces";
 
-type TodoAction = 
-    | { type: 'addTodo', payload: Todo }
-    | { type: 'toggleTodo', payload: { id: string } };
+type TodoAction =
+  | { type: "addTodo"; payload: Todo }
+  | { type: "toggleTodo"; payload: { id: string } };
 
+export const todoReducer = (
+  state: TodoState,
+  action: TodoAction
+): TodoState => {
+  switch (action.type) {
+    case "addTodo":
+      return {
+        ...state,
+        todos: [...state.todos, action.payload],
+      };
 
-export const todoReducer = ( state: TodoState, action: TodoAction ): TodoState => {
+    case "toggleTodo":
+      return {
+        ...state,
+        // here I am doing the spread of the prop of todo to be suer that
+        // we are creating another new. We can't mutate the todo object directly
+        // Asi aseguramos que estamos regresando un nuevo todo y un nuevo state.
+        todos: state.todos.map(({ ...todo }) => {
+          if (todo.id === action.payload.id) {
+            todo.completed = !todo.completed;
+          }
+          return todo;
+        }),
+      };
 
-    switch ( action.type ) {
-        case 'addTodo':
-            return {
-                ...state,
-                todos: [ ...state.todos, action.payload ]
-            }
-
-        case 'toggleTodo': 
-            return {
-                ...state,
-                todos: state.todos.map( ({ ...todo }) => {
-                    if( todo.id === action.payload.id ) {
-                        todo.completed = !todo.completed;
-                    }
-                    return todo;
-                })
-            }
-
-            
-        default:
-            return state;
-    }
-
-}
+    default:
+      return state;
+  }
+};

@@ -1,14 +1,13 @@
-import { TodoProvider } from './context/TodoProvider';
-import { TodoList } from './components/TodoList';
-import { Title } from './components/Title';
+import { TodoProvider } from "./context/TodoProvider";
+import { TodoList } from "./components/TodoList";
+import { Title } from "./components/Title";
 
 export const Todo = () => {
-
-
-    return (
-        <TodoProvider>
-            <Title />
-            <TodoList />
-        </TodoProvider>
-    )
-}
+  return (
+    // Just what is inside of the provider has access to the Context.
+    <TodoProvider>
+      <Title />
+      <TodoList />
+    </TodoProvider>
+  );
+};
